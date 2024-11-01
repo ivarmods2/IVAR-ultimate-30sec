@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #1c1f26;
+            color: #fff;
+            margin: 0;
+            overflow: hidden;
+        }
+        .title {
+            font-size: 2.5rem;
+            color: #FF0000;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: glow 1.5s infinite alternate;
+        }
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #FF0000, 0 0 10px #FF3333, 0 0 15px #FF6666;
+            }
+            to {
+                text-shadow: 0 0 10px #FF3333, 0 0 20px #FF6666, 0 0 30px #FF9999;
+            }
+        }
+        .container {
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #2b2f38;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 1;
+            border: 2px solid #FFCCCC;
+        }
+        .box {
+            font-size: 1.5rem;
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #FFCCCC;
+            background-color: rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+        .period-box {
+            background: linear-gradient(45deg, #FF0000, #FFFFFF);
+            color: #333;
+            font-weight: bold;
+        }
+        .timer-box, .result-box {
+            background: #333;
+            color: #fff;
+        }
+        .history {
+            margin-top: 10px;
+            width: 100%;
+            max-height: 80px; /* Adjusted height for a smaller box */
+            position: relative;
+            z-index: 1;
+            background-color: #FFCCCC;
+            padding: 5px; /* Less padding for a more compact look */
+            border-radius: 10px;
+            overflow-y: auto;
+            border: 2px solid #FFCCCC;
+            font-size: 0.85rem; /* Smaller font size */
+        }
+        .history-header {
+            color: #b30000;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #b30000;
+            padding-bottom: 3px;
+            margin-bottom: 5px;
+        }
+        .history-item {
+            background-color: #333;
+            padding: 2px;
+            margin: 2px 0;
+            border: 1px solid #555;
+            color: #ff6666;
+            display: flex;
+            justify-content: space-between;
+        }
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .flame-particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: rgba(255, 69, 0, 0.8);
+            animation: floatUp 3s infinite ease-in;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+        .footer-text {
+            font-size: 1.5rem; /* Increased size */
+            color: lightcoral;
+            margin-top: 20px;
+            animation: glowText 1.5s infinite alternate;
+        }
+        @keyframes glowText {
+            from {
+                text-shadow: 0 0 5px lightcoral, 0 0 10px lightcoral;
+            }
+            to {
+                text-shadow: 0 0 10px lightcoral, 0 0 20px lightcoral;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="title">IVAR ULTIMATE</div>
+    <div class="container">
+        <div class="box period-box">Period: <span id="periodNumber">Loading...</span></div>
+        <div class="box timer-box">Timer: <span id="timer">00 : 00</span></div>
+        <div class="box result-box">Result: <span id="result">Waiting...</span></div>
+
+        <div class="history">
+            <div class="history-header">History</div>
+            <div id="historyList"></div>
+        </div>
+    </div>
+
+    <div class="footer-text">PRESENT BY IVAR MODS</div>
+
+    <div class="particle-container" id="particleContainer"></div>
+
+    <script>
+        const periodNumber = document.getElementById("periodNumber");
+        const timerDisplay = document.getElementById("timer");
+        const resultDisplay = document.getElementById("result");
+        const historyList = document.getElementById("historyList");
+        const particleContainer = document.getElementById("particleContainer");
+
+        const resultsArray = ["BIG", "SMALL", "BIG", "SMALL", "SMALL", "BIG", "SMALL", "BIG", "BIG", "SMALL"];
+        let lastPeriod = null;
+
+        // Period and result update function
+        function updatePeriodAndResult() {
+            const now = new Date();
+            const totalMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+            const seconds = now.getUTCSeconds();
+            const period = 1 + totalMinutes * 2 + (seconds >= 30 ? 1 : 0);
+            const newPeriodNumber = `${now.toISOString().slice(0, 10).replace(/-/g, '')}30${period}`;
+
+            if (newPeriodNumber !== lastPeriod) {
+                lastPeriod = newPeriodNumber;
+                periodNumber.textContent = newPeriodNumber;
+
+                // Show result once per period change
+                const randomIndex = Math.floor(Math.random() * resultsArray.length);
+                const result = resultsArray[randomIndex];
+                resultDisplay.textContent = result;
+
+                // Add to history in a compact format
+                const historyItem = document.createElement("div");
+                historyItem.className = "history-item";
+                historyItem.innerHTML = `<span>Period: ${newPeriodNumber}</span><span>Result: ${result}</span>`;
+                historyList.prepend(historyItem);
+            }
+        }
+
+        // Timer update function
+        function updateTimer() {
+            const now = new Date();
+            const seconds = now.getUTCSeconds();
+            const remainingSeconds = 30 - (seconds % 30);
+            timerDisplay.textContent = `00 : ${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds}`;
+        }
+
+        // Flame particle generator function
+        function generateFlameParticles() {
+            const particle = document.createElement("div");
+            particle.classList.add("flame-particle");
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.animationDuration = `${Math.random() * 2 + 2}s`;
+            particleContainer.appendChild(particle);
+
+            setTimeout(() => particle.remove(), 3000);
+        }
+
+        // Run update every second
+        setInterval(() => {
+            updateTimer();
+            if (new Date().getUTCSeconds() % 30 === 0) {
+                updatePeriodAndResult();
+            }
+        }, 1000);
+
+        // Generate flame particles every 200ms
+        setInterval(generateFlameParticles, 200);
+    </script>
+</body>
+</html>
