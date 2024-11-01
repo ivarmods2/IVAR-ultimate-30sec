@@ -13,13 +13,12 @@
             justify-content: center;
             height: 100vh;
             background-color: #1c1f26;
-            color: #fff;
             margin: 0;
             overflow: hidden;
         }
         .title {
             font-size: 2.5rem;
-            color: #FF0000;
+            color: #FF00FF; /* Neon Pink */
             font-weight: bold;
             text-align: center;
             margin-bottom: 20px;
@@ -27,10 +26,10 @@
         }
         @keyframes glow {
             from {
-                text-shadow: 0 0 5px #FF0000, 0 0 10px #FF3333, 0 0 15px #FF6666;
+                text-shadow: 0 0 5px #FF00FF, 0 0 10px #FF33FF, 0 0 15px #FF66FF;
             }
             to {
-                text-shadow: 0 0 10px #FF3333, 0 0 20px #FF6666, 0 0 30px #FF9999;
+                text-shadow: 0 0 10px #FF33FF, 0 0 20px #FF66FF, 0 0 30px #FF99FF;
             }
         }
         .container {
@@ -43,21 +42,21 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             position: relative;
             z-index: 1;
-            border: 2px solid #FFCCCC;
+            border: 2px solid #FF00FF; /* Neon Pink border */
         }
         .box {
-            font-size: 1.5rem;
-            margin: 15px 0;
-            padding: 15px;
+            font-size: 1.2rem; /* Smaller font size for boxes */
+            margin: 5px 0; /* Reduced margin */
+            padding: 10px; /* Reduced padding */
             border-radius: 10px;
-            border: 2px solid #FFCCCC;
+            border: 2px solid #00FF00; /* Neon Green border */
             background-color: rgba(255, 255, 255, 0.1);
             position: relative;
             z-index: 1;
         }
         .period-box {
-            background: linear-gradient(45deg, #FF0000, #FFFFFF);
-            color: #333;
+            background: linear-gradient(45deg, #FF0000, #FF00FF); /* Neon Gradient */
+            color: #fff; /* White text for better contrast */
             font-weight: bold;
         }
         .timer-box, .result-box {
@@ -66,22 +65,22 @@
         }
         .history {
             margin-top: 10px;
-            width: 100%;
-            max-height: 80px; /* Adjusted height for a smaller box */
+            width: 95%; /* Set history box to 95% width */
+            max-height: 150px; /* Increased height for more items */
             position: relative;
             z-index: 1;
-            background-color: #FFCCCC;
-            padding: 5px; /* Less padding for a more compact look */
+            background: linear-gradient(45deg, #00FF00, #00FFFF); /* Neon Green to Cyan */
+            padding: 5px; /* Less padding for a compact look */
             border-radius: 10px;
             overflow-y: auto;
-            border: 2px solid #FFCCCC;
+            border: 2px solid #00FF00; /* Neon Green border */
             font-size: 0.85rem; /* Smaller font size */
         }
         .history-header {
-            color: #b30000;
+            color: #FF00FF; /* Neon Pink */
             font-weight: bold;
-            font-size: 1.1rem;
-            border-bottom: 1px solid #b30000;
+            font-size: 1rem; /* Smaller size for header */
+            border-bottom: 1px solid #FF00FF; /* Neon Pink */
             padding-bottom: 3px;
             margin-bottom: 5px;
         }
@@ -89,8 +88,8 @@
             background-color: #333;
             padding: 2px;
             margin: 2px 0;
-            border: 1px solid #555;
-            color: #ff6666;
+            border: 1px solid #555; /* Dark border */
+            color: white; /* White text for history items */
             display: flex;
             justify-content: space-between;
         }
@@ -123,16 +122,17 @@
         }
         .footer-text {
             font-size: 1.5rem; /* Increased size */
-            color: lightcoral;
+            color: #FF00FF; /* Neon Pink */
             margin-top: 20px;
             animation: glowText 1.5s infinite alternate;
+            font-weight: bold; /* Make footer text bold */
         }
         @keyframes glowText {
             from {
-                text-shadow: 0 0 5px lightcoral, 0 0 10px lightcoral;
+                text-shadow: 0 0 5px #FF00FF, 0 0 10px #FF33FF;
             }
             to {
-                text-shadow: 0 0 10px lightcoral, 0 0 20px lightcoral;
+                text-shadow: 0 0 10px #FF33FF, 0 0 20px #FF66FF;
             }
         }
     </style>
